@@ -40,6 +40,7 @@ func SetupRouter(h *Handler) http.Handler {
 		// Public Auth routes
 		r.Post("/auth/register", h.Register)
 		r.Post("/auth/login", h.Login)
+		r.Get("/ws", h.Hub.ServeWS)
 
 		// Authenticated routes
 		r.Group(func(r chi.Router) {
@@ -47,9 +48,6 @@ func SetupRouter(h *Handler) http.Handler {
 
 			r.Get("/auth/profile", h.GetProfile)
 			r.Get("/categories", h.GetCategories)
-
-			// WebSocket route
-			r.Get("/ws", h.Hub.ServeWS)
 
 			// Notifications routes
 			r.Get("/notifications", h.GetNotifications)
