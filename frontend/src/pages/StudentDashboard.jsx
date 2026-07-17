@@ -422,7 +422,7 @@ export default function StudentDashboard({ user, wsUpdateTrigger }) {
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <h4 style={{ marginBottom: '0.5rem' }}>Evidence Attachment</h4>
                                 <img
-                                    src={`http://localhost:8082${selectedRequest.image_url}`}
+                                    src={`${API_URL.replace(/\/api$/, '')}${selectedRequest.image_url}`}
                                     alt="Evidence"
                                     style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-glass)' }}
                                 />
