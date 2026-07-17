@@ -7,8 +7,19 @@ import StudentDashboard from './pages/StudentDashboard';
 import OfficerDashboard from './pages/OfficerDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 
-export const API_URL = 'http://localhost:8082/api';
-export const WS_URL = 'ws://localhost:8082/api/ws';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8082/api';
+
+const getWsUrl = () => {
+  const apiBase = API_URL.replace(/\/api$/, '');
+  if (apiBase.startsWith('https://')) {
+    return apiBase.replace(/^https:\/\//, 'wss://') + '/api/ws';
+  } else if (apiBase.startsWith('http://')) {
+    return apiBase.replace(/^http:\/\//, 'ws://') + '/api/ws';
+  }
+  return 'ws://localhost:8082/api/ws';
+};
+
+export const WS_URL = getWsUrl();
 
 function AppContent() {
   const [user, setUser] = useState(null);
