@@ -179,7 +179,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusUnauthorized, "Invalid email or password")
 		return
 	} else if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Database error")
+		respondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Database error: %v", err))
 		return
 	}
 
