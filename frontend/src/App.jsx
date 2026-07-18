@@ -27,8 +27,22 @@ function AppContent() {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [wsUpdateTrigger, setWsUpdateTrigger] = useState(0);
+  const [toast, setToast] = useState(null);
   const wsRef = useRef(null);
   const navigate = useNavigate();
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+  };
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
 
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
@@ -263,11 +277,11 @@ function AppContent() {
             element={
               user ? (
                 user.role === 'admin' ? (
-                  <AdminDashboard user={user} wsUpdateTrigger={wsUpdateTrigger} />
+                  <AdminDashboard user={user} wsUpdateTrigger={wsUpdateTrigger} showToast={showToast} />
                 ) : user.role === 'officer' ? (
-                  <OfficerDashboard user={user} wsUpdateTrigger={wsUpdateTrigger} />
+                  <OfficerDashboard user={user} wsUpdateTrigger={wsUpdateTrigger} showToast={showToast} />
                 ) : (
-                  <StudentDashboard user={user} wsUpdateTrigger={wsUpdateTrigger} />
+                  <StudentDashboard user={user} wsUpdateTrigger={wsUpdateTrigger} showToast={showToast} />
                 )
               ) : (
                 <Navigate to="/login" />
@@ -281,6 +295,12 @@ function AppContent() {
       <footer style={{ padding: '2rem 1.5rem', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-glass)', marginTop: 'auto' }}>
         &copy; {new Date().getFullYear()} MIVA Open University. All Rights Reserved.
       </footer>
+
+      {toast && (
+        <div className={`toast toast-${toast.type}`}>
+          <span>{toast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

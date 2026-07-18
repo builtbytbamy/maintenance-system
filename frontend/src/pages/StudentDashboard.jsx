@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Search, Filter, Calendar, MapPin, AlertCircle, CheckCircle2, Clock, XCircle, Eye, Image as ImageIcon, Wrench } from 'lucide-react';
 import { API_URL } from '../App';
 
-export default function StudentDashboard({ user, wsUpdateTrigger }) {
+export default function StudentDashboard({ user, wsUpdateTrigger, showToast }) {
     const [requests, setRequests] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -118,8 +118,10 @@ export default function StudentDashboard({ user, wsUpdateTrigger }) {
                 setLocation('');
                 setImageFile(null);
                 fetchRequests();
+                showToast('Request submitted successfully!');
             } else {
                 setFormError(data.error || 'Failed to submit request');
+                showToast(data.error || 'Failed to submit request', 'error');
             }
         } catch (err) {
             setFormError('Failed to connect to server. Please try again.');

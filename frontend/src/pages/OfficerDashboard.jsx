@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Calendar, MapPin, AlertCircle, CheckCircle2, Clock, XCircle, Eye, Edit3, Wrench } from 'lucide-react';
 import { API_URL } from '../App';
 
-export default function OfficerDashboard({ user, wsUpdateTrigger }) {
+export default function OfficerDashboard({ user, wsUpdateTrigger, showToast }) {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -101,8 +101,10 @@ export default function OfficerDashboard({ user, wsUpdateTrigger }) {
                 if (showDetailModal && selectedRequest.id) {
                     handleViewDetails(selectedRequest.id);
                 }
+                showToast('Status updated successfully!');
             } else {
                 setUpdateError(data.error || 'Failed to update status');
+                showToast(data.error || 'Failed to update status', 'error');
             }
         } catch (err) {
             setUpdateError('Failed to connect to server. Please try again.');

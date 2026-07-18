@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Calendar, MapPin, AlertCircle, CheckCircle2, Clock, XCircle, Eye, UserPlus, FileText, UserCheck, ShieldAlert, Wrench } from 'lucide-react';
 import { API_URL } from '../App';
 
-export default function AdminDashboard({ user, wsUpdateTrigger }) {
+export default function AdminDashboard({ user, wsUpdateTrigger, showToast }) {
     const [requests, setRequests] = useState([]);
     const [categories, setCategories] = useState([]);
     const [officers, setOfficers] = useState([]);
@@ -150,8 +150,10 @@ export default function AdminDashboard({ user, wsUpdateTrigger }) {
                 if (showDetailModal && selectedRequest.id) {
                     handleViewDetails(selectedRequest.id);
                 }
+                showToast('Request assigned successfully!');
             } else {
                 setAssignError(data.error || 'Failed to assign request');
+                showToast(data.error || 'Failed to assign request', 'error');
             }
         } catch (err) {
             setAssignError('Failed to connect to server. Please try again.');
@@ -184,12 +186,14 @@ export default function AdminDashboard({ user, wsUpdateTrigger }) {
                 setRegEmail('');
                 setRegPassword('');
                 fetchOfficers();
+                showToast('User registered successfully!');
                 setTimeout(() => {
                     setShowRegisterModal(false);
                     setRegSuccess('');
                 }, 1500);
             } else {
                 setRegError(data.error || 'Failed to register user');
+                showToast(data.error || 'Failed to register user', 'error');
             }
         } catch (err) {
             setRegError('Failed to connect to server. Please try again.');
